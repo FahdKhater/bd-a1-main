@@ -44,8 +44,6 @@ The final K-Means model uses four clusters and has a silhouette score of **0.024
 
 ## Figures
 
-Place all five PNG files in `output/figures/`, using the filenames shown below. The images will then display here when the README is viewed on GitHub or another Markdown viewer that supports relative image paths.
-
 **Correlation heatmap**
 
 ![Correlation heatmap](output/figures/correlation_heatmap.png)
