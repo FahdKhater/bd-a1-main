@@ -1,77 +1,93 @@
-# CSCI461 Assignment 1 - IMDB Review Analysis
+# CSCI461 Assignment 1 — IMDB Review Analysis
 
-Analysis of 50,000 IMDB reviews for sentiment classification and K-Means clustering.
+Analysis of 50,000 IMDB reviews covering data preprocessing, text analysis, supervised sentiment classification, and K-Means clustering. After removing 418 duplicate rows, the analysis uses 49,582 reviews. The cleaned corpus contains approximately 11.62 million tokens, with an average of 234 words per review. The positive and negative classes are nearly evenly represented.
 
-## Project files
+## Project structure
 
 ```text
-data/IMDB Dataset.csv              source data
-notebook/analysis.ipynb            complete analysis notebook
-output/figures/                    saved charts and confusion matrices
-output/files/                      cleaned data, metrics, and cluster summary
-screenshots/                       Docker and JupyterLab evidence
-Dockerfile                         JupyterLab image definition
-requirements.txt                   additional Python packages
+.
+├── data/IMDB Dataset.csv
+├── notebook/analysis.ipynb
+├── output/
+│   ├── figures/
+│   └── files/
+├── screenshots/
+├── Dockerfile
+└── requirements.txt
 ```
 
-## Run locally
+`output/figures/` contains the generated plots. `output/files/` contains the cleaned dataset, model metrics, and clustering summary. `screenshots/` contains the Docker and JupyterLab evidence.
 
-Build the image from the project root:
+## Run with Docker
+
+Run these commands from the project root in PowerShell:
 
 ```powershell
 docker build -t bd-a1 .
-```
-
-Run JupyterLab with the notebook and outputs stored on the host:
-
-```powershell
 docker run -p 8888:8888 --name bd-a1 -v "${PWD}\notebook:/home/jovyan/work/notebook" -v "${PWD}\output:/home/jovyan/work/output" bd-a1
 ```
 
-Open the JupyterLab URL printed in the terminal, then run `notebook/analysis.ipynb` from top to bottom.
+Open the JupyterLab URL printed in the terminal and run `notebook/analysis.ipynb` from top to bottom. The notebook and output folders are mounted from the host, so changes and generated files remain in the project after the container stops.
 
-`bd-a1` is the image built from the Dockerfile. The running container is an instance of that image. In `-p 8888:8888`, the first port is on the host and the second is inside the container. The two bind mounts keep notebook edits and `output/` files after the container stops or is removed.
+The Dockerfile copies the dataset into the image and installs the packages listed in `requirements.txt`.
 
-## Docker commands used for evidence
+## Results
 
-```powershell
-docker images
-docker ps
-docker ps -a
-docker logs bd-a1
-docker inspect bd-a1
-```
+| Model | Test accuracy |
+|---|---:|
+| Logistic Regression | 89.03% |
+| LinearSVC | 88.15% |
+
+Logistic Regression achieved slightly higher test accuracy. LinearSVC had a larger gap between training accuracy (95.70%) and test accuracy (88.15%), indicating greater overfitting.
+
+The final K-Means model uses four clusters and has a silhouette score of **0.0243**, indicating weak cluster separation. Cluster 0 is nearly balanced, clusters 1 and 2 lean positive, and cluster 3 is predominantly negative. These are loose groupings rather than cleanly separated sentiment categories.
+
+## Figures
+
+Place all five PNG files in `output/figures/`, using the filenames shown below. The images will then display here when the README is viewed on GitHub or another Markdown viewer that supports relative image paths.
+
+**Correlation heatmap**
+
+![Correlation heatmap](output/figures/correlation_heatmap.png)
+
+**Word-frequency comparison**
+
+![Word-frequency comparison](output/figures/word_frequency_comparison.png)
+
+**Review-group comparison**
+
+![Review-group comparison](output/figures/group_comparison.png)
+
+**Logistic Regression confusion matrix**
+
+![Logistic Regression confusion matrix](output/figures/logisticReg_confusion_matrix.png)
+
+**LinearSVC confusion matrix**
+
+![LinearSVC confusion matrix](output/figures/linearSVC_confusion_matrix.png)
+
+## Assignment coverage
+
+| Requirement | Location |
+|---|---|
+| Dataset inspection, cleaning, sampling, transformations, and correlation | `analysis.ipynb` — Data Analysis and Preprocessing |
+| Text cleaning, token statistics, word frequencies, group comparison, and observations | `analysis.ipynb` — Text Analysis |
+| TF-IDF, Logistic Regression, LinearSVC, evaluation, and confusion matrices | `analysis.ipynb` — Supervised Text Classification |
+| K-Means, cluster evaluation, cluster sizes, and label comparison | `analysis.ipynb` — K-Means Clustering; `output/files/cluster_summary.txt` |
+| Docker image, container, JupyterLab, and Docker Hub evidence | `Dockerfile` and `screenshots/` |
 
 ## Docker Hub
 
 Published image: `lark201/bd-a1:latest`
 
 ```powershell
-docker tag bd-a1 lark201/bd-a1:latest
-docker push lark201/bd-a1:latest
 docker pull lark201/bd-a1:latest
 docker run -p 8888:8888 --name bd-a1 -v "${PWD}\notebook:/home/jovyan/work/notebook" -v "${PWD}\output:/home/jovyan/work/output" lark201/bd-a1:latest
 ```
 
-## Saved results
+To publish an updated image:
 
-| Result | Location |
-|---|---|
-| Cleaned review data | `output/files/cleaned_data.csv` |
-| Supervised-model metrics | `output/files/logisticReg_metrics.txt`, `output/files/linearSVC_metrics.txt` |
-| K-Means sizes, label comparison, silhouette score, and cluster notes | `output/files/cluster_summary.txt` |
-| Correlation heatmap | `output/figures/correlation_heatmap.png` |
-| Word-frequency comparison | `output/figures/word_frequency_comparison.png` |
-| Sentiment-group comparison | `output/figures/group_comparison.png` |
-| Logistic Regression and LinearSVC confusion matrices | `output/figures/logisticReg_confusion_matrix.png`, `output/figures/linearSVC_confusion_matrix.png` |
-
-## Assignment checklist
-
-| Requirement | Done in |
-|---|---|
-| Docker image, packages, working directory, dataset, and notebook copy | `Dockerfile`, `requirements.txt` |
-| Dataset inspection, cleaning, `loc`/`iloc`, transformations, sampling, and correlation | `notebook/analysis.ipynb` under **Data Analysis and Preprocessing** |
-| Cleaning, token counts, word frequencies, group comparison, and five observations | `notebook/analysis.ipynb` under **Text Analysis** |
-| TF-IDF, Logistic Regression, LinearSVC, metrics, and confusion matrices | `notebook/analysis.ipynb` under **Supervised Text Classification**; metric and figure paths above |
-| K-Means, selection of `k`, silhouette score, cluster sizes, top terms, and label comparison | `notebook/analysis.ipynb` under **K-Means Clustering**; `output/files/cluster_summary.txt` |
-| Docker build, image, container, JupyterLab, push, pull, and Docker Hub evidence | `screenshots/` |
+```powershell
+docker tag bd-a1 lark201/bd-a1:latest
+docker push lark201/bd-a1:latest
+```
