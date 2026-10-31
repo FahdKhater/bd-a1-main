@@ -2,6 +2,12 @@
 
 Analysis of 50,000 IMDB reviews covering data preprocessing, text analysis, supervised sentiment classification, and K-Means clustering. After removing 418 duplicate rows, the analysis uses 49,582 reviews. The cleaned corpus contains approximately 11.62 million tokens, with an average of 234 words per review. The positive and negative classes are nearly evenly represented.
 
+## Team Members
+Mazen El-Mallah
+Omar Tamer
+Marwan Yasser
+Fahd Khater
+
 ## Project structure
 
 ```text
