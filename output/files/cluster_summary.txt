@@ -1,0 +1,16 @@
+Clustering Info:
+sentiment  negative  positive    All
+cluster                             
+0              4684      4500   9184
+1              4355      5641   9996
+2              8517     13502  22019
+3              7142      1241   8383
+All           24698     24884  49582
+
+Silhouette Score: 0.0243
+
+Interpretations:
+ 0: Mixed reviews
+ 1: More negative
+ 2: positive reviews related to different genres and types of films
+ 3: positive reviews but could be more related to a franchise. (film, films, director)

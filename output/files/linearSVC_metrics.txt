@@ -1,0 +1,11 @@
+LinearSVC Accuracy: 0.8815
+
+Classification Report:
+              precision    recall  f1-score   support
+
+    negative       0.89      0.87      0.88      4939
+    positive       0.87      0.89      0.88      4978
+
+    accuracy                           0.88      9917
+   macro avg       0.88      0.88      0.88      9917
+weighted avg       0.88      0.88      0.88      9917
